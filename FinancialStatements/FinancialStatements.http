@@ -1,0 +1,9 @@
+@FinancialStatements_HostAddress = https://localhost:7013
+
+GET {{FinancialStatements_HostAddress}}/api/v3/FinancialStatements/MonthlyFees
+
+###
+
+GET {{FinancialStatements_HostAddress}}/api/v3/FinancialStatements/VisualizeHomes
+
+###
