@@ -31,15 +31,16 @@ public static class VisualizeStatementEndpoints
             return Results.Ok(data);
         });
 
-        routeGroup.MapGet("/FinancialStatements/SearchAccount", async ([FromServices] IGetSearchAccountController controller, [FromQuery] int code, 
-            [FromQuery] string nameResident, [FromQuery] bool status) =>
+        routeGroup.MapGet("/FinancialStatements/SearchAccount", async ([FromServices] IGetSearchAccountController controller, [FromQuery] int code,
+        [FromQuery] string nameResident, [FromQuery] bool status) =>
         {
-            var data = await controller.GetAllSearchAccountAsync(code);
-            var data2 = await controller.GetAllSearchAccountAsync(nameResident);
-            var data3 = await controller.GetAllSearchAccountAsync(status);
+            var data = new List<object>
+        {
+            await controller.GetAllSearchAccountAsync(code),
+            await controller.GetAllSearchAccountAsync(nameResident),
+            await controller.GetAllSearchAccountAsync(status)
+        };
             return Results.Ok(data);
-            return Results.Ok(data2);
-            return Results.Ok(data3);
         });
 
 
