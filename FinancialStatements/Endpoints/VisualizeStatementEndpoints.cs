@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Learn.Api.Controllers.FinancialStatement;
 using Learn.Api.Business.Objects.Interfaces.FinancialStatement.VisualizeAccount;
 using Learn.Api.Business.Objects.Interfaces.FinancialStatement.MonthlyFees;
@@ -15,7 +15,7 @@ public static class VisualizeStatementEndpoints
 
         routeGroup.MapGet("/FinancialStatement", async ([FromServices] IGetVisualizeAccountController controller, [FromQuery] bool status) =>
         {
-            var data = await controller.GetAllFinancialStatementAsync();
+            var data = await controller.GetAllFinancialStatementAsync(status);
             return Results.Ok(data);
         });
 
@@ -32,17 +32,16 @@ public static class VisualizeStatementEndpoints
         });
 
         routeGroup.MapGet("/FinancialStatements/SearchAccount", async ([FromServices] IGetSearchAccountController controller, [FromQuery] int code,
-        [FromQuery] string nameResident, [FromQuery] bool status) =>
+            [FromQuery] string nameResident, [FromQuery] bool status) =>
         {
             var data = new List<object>
-        {
-            await controller.GetAllSearchAccountAsync(code),
-            await controller.GetAllSearchAccountAsync(nameResident),
-            await controller.GetAllSearchAccountAsync(status)
-        };
+            {
+                await controller.GetAllSearchAccountAsync(code),
+                await controller.GetAllSearchAccountAsync(nameResident),
+                await controller.GetAllSearchAccountAsync(status)
+            };
             return Results.Ok(data);
         });
-
 
         return app;
     }
