@@ -1,16 +1,22 @@
-﻿using Learn.Api.Business.Objects.Interfaces.FinancialStatement.VisualizeAccount;
+using Learn.Api.Business.Objects.Interfaces.FinancialStatement.VisualizeAccount;
 using Learn.Api.Domain.Entities.Dtos;
 using Learn.Api.Domain.Entities.Dtos.FinancialStatement;
 using Microsoft.EntityFrameworkCore;
 namespace Learn.Api.Repository.EFCore.Commands.FinancialStatement
 {
-    internal class VisualizeAccountRepository(AppLearnContext context): IGetVisualizeAccountRepository
+    internal class VisualizeAccountRepository : IGetVisualizeAccountRepository
     {
+        private readonly AppLearnContext context;
+
+        public VisualizeAccountRepository(AppLearnContext context)
+        {
+            this.context = context;
+        }
+
         public async Task<ResponseVisualizeAccount<VisualizeAccountDto>> GetAllFinancialStatementAsync()
         {
-            var response = new ResponseVisualizeAccount<VisualizeAccountDto>
-            {
-                Items = await context.VisualizeAccounts.Select(
+
+                var items = await context.VisualizeAccounts.Select(
                     visualizeAccount => new VisualizeAccountDto
                     (
                         visualizeAccount.Code,
@@ -19,11 +25,32 @@ namespace Learn.Api.Repository.EFCore.Commands.FinancialStatement
                         visualizeAccount.Status,
                         visualizeAccount.Service,
                         visualizeAccount.FinancialStatement
-                    )
-                ).ToListAsync()
-            };
+                    ))
+                .ToListAsync();
 
-            return response;
+            return new ResponseVisualizeAccount<VisualizeAccountDto>
+            {
+                Items = items
+            };
+        }
+        public async Task<ResponseVisualizeAccount<VisualizeAccountDto>> GetAllFinancialStatementAsync(bool status)
+        {
+            var items = await context.VisualizeAccounts
+                .Where(visualizeAccount => visualizeAccount.Status == status)
+                .Select(visualizeAccount => new VisualizeAccountDto(
+                    visualizeAccount.Code,
+                    visualizeAccount.NameResident,
+                    visualizeAccount.Address,
+                    visualizeAccount.Status,
+                    visualizeAccount.Service,
+                    visualizeAccount.FinancialStatement
+                ))
+                .ToListAsync();
+
+            return new ResponseVisualizeAccount<VisualizeAccountDto>
+            {
+                Items = items
+            };
         }
 
         public async Task<ResponseSearchAccount<SearchAccountDto>> GetAllSearchAccountAsync(bool status)
@@ -45,14 +72,10 @@ namespace Learn.Api.Repository.EFCore.Commands.FinancialStatement
                 Items = items
             };
         }
+
         public async Task SaveChangesAsync()
         {
             await context.SaveChangesAsync();
-        }
-
-        Task<ResponseVisualizeAccount<VisualizeAccountDto>> IGetVisualizeAccountRepository.GetAllFinancialStatementsAsync(bool status)
-        {
-            throw new NotImplementedException();
         }
     }
 }
