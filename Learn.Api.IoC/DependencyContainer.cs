@@ -12,6 +12,7 @@ namespace Learn.Api.IoC
             services.AddLearnUseCases();
             services.AddLearnControllers();
             services.AddLearnRepositories();
+
             return services;
         }
     }
