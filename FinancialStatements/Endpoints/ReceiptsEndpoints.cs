@@ -17,14 +17,23 @@ public static class ReceiptsEndpoints
         // Función para manejar errores y devolver JSON estándar
         static IResult HandleError(Exception ex, string path)
         {
+            int statusCode = 500;
+            string errorMsg = ex.Message;
+
+            // Si es un error de validación, devolver 400
+            if (ex is ArgumentException || ex is FormatException)
+            {
+                statusCode = 400;
+            }
+
             var errorObj = new
             {
-                status = 500,
-                error = ex.Message,
+                status = statusCode,
+                error = errorMsg,
                 path = path,
                 timestamp = DateTime.UtcNow.ToString("o")
             };
-            return Results.Json(errorObj, statusCode: 500);
+            return Results.Json(errorObj, statusCode: statusCode);
         }
 
         // === Endpoint para crear un nuevo recibo ===
@@ -61,6 +70,8 @@ public static class ReceiptsEndpoints
             try
             {
                 var result = await controller.GetAsync(date);
+                if (result is IEnumerable<Receipt> receipts && !receipts.Any())
+                    return Results.NotFound("No se encontraron recibos para la fecha especificada.");
                 return Results.Ok(result);
             }
             catch (Exception ex)
@@ -75,6 +86,8 @@ public static class ReceiptsEndpoints
             try
             {
                 var result = await controller.GetAsync();
+                if (result is IEnumerable<Receipt> receipts && !receipts.Any())
+                    return Results.NotFound("No se encontraron recibos para el día actual.");
                 return Results.Ok(result);
             }
             catch (Exception ex)
@@ -89,6 +102,8 @@ public static class ReceiptsEndpoints
             try
             {
                 var result = await controller.GetAsync();
+                if (result is IEnumerable<Receipt> receipts && !receipts.Any())
+                    return Results.NotFound("No se encontraron recibos para el mes actual.");
                 return Results.Ok(result);
             }
             catch (Exception ex)
@@ -103,6 +118,8 @@ public static class ReceiptsEndpoints
             try
             {
                 var result = await controller.GetAsync(houseId, residentName);
+                if (result is IEnumerable<Receipt> receipts && !receipts.Any())
+                    return Results.NotFound("No se encontraron recibos para los criterios de búsqueda proporcionados.");
                 return Results.Ok(result);
             }
             catch (Exception ex)
@@ -117,6 +134,8 @@ public static class ReceiptsEndpoints
             try
             {
                 var result = await controller.GetAsync();
+                if (result is IEnumerable<Receipt> receipts && !receipts.Any())
+                    return Results.NotFound("No se encontraron recibos registrados.");
                 return Results.Ok(result);
             }
             catch (Exception ex)
