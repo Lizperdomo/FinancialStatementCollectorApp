@@ -1,9 +1,32 @@
 @FinancialStatements_HostAddress = https://localhost:7013
 
+### --- FINANCIAL STATEMENTS ---
 GET {{FinancialStatements_HostAddress}}/api/v3/FinancialStatements/MonthlyFees
 
 ###
-
 GET {{FinancialStatements_HostAddress}}/api/v3/FinancialStatements/VisualizeHomes
 
+
+### --- CHARGERS ---
+# Registrar un nuevo cargo para un email
+POST {{FinancialStatements_HostAddress}}/api/v3/Chargers/RegisterCharge/test@mail.com
+Content-Type: application/json
+
+{
+  "agreementNumber": "CNV-12345",
+  "description": "Mantenimiento anual",
+  "debt": 1500.00,
+  "paymentsCount": 3,
+  "amount": 500.00,
+  "dueDate": "2025-08-31T00:00:00Z"
+}
+
 ###
+# Asociar un ingreso adicional a un cargo existente por email
+POST {{FinancialStatements_HostAddress}}/api/v3/Chargers/AssociateCharge/test@mail.com
+Content-Type: application/json
+
+{
+  "miscIncomeType": "Penalización",
+  "amount": 120.00
+}
