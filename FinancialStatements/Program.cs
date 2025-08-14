@@ -38,6 +38,7 @@ app.InitializeLearnApiDb();
 
 app.MapVisualizeStatementEndpoints();
 app.MapReceiptsEndpoints();
+app.MapChargersEndpoints();
 app.MapControllers();
 
 app.Run();

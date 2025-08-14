@@ -3,6 +3,7 @@ using Learn.Api.Business.Objects.Interfaces.FinancialStatement.SearchAccount;
 using Learn.Api.Business.Objects.Interfaces.FinancialStatement.VisualizeAccount;
 using Learn.Api.BusinessObjects.Interfaces.FinancialStatement.GetVisualizeHomes.VisualizeAccount;
 using Learn.Api.BusinessObjects.Interfaces.Receipts;
+using Learn.Api.BusinessObjects.Interfaces.Chargers; 
 using Learn.Api.UseCases.Receipts.CancelReceipt;
 using Learn.Api.UseCases.Receipts.CreateReceipt;
 using Learn.Api.UseCases.Receipts.GetAllReceipts;
@@ -11,6 +12,7 @@ using Learn.Api.UseCases.Receipts.GetReceiptsByHouseOrResident;
 using Learn.Api.UseCases.Receipts.GetReceiptsForCurrentDay;
 using Learn.Api.UseCases.Receipts.GetReceiptsForCurrentMonth;
 using Learn.Api.UseCases.VisualizeAccount;
+using Learn.Api.UseCases.Chargers; 
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Learn.Api.UseCases;
@@ -24,8 +26,7 @@ public static class DependencyContainer
         services.AddScoped<IGetSearchAccountInput, GetSearchAccountHandler>();
         services.AddScoped<IGetMonthlyFeesInput, GetMonthlyFeesHandler>();
 
-        //RECIBOS//
-        // Casos de uso relacionados con recibos
+        // RECIBOS
         services.AddScoped<ICreateReceiptInput, CreateReceiptHandler>();
         services.AddScoped<ICancelReceiptInput, CancelReceiptHandler>();
         services.AddScoped<IGetReceiptsForCurrentDayInput, GetReceiptsForCurrentDayHandler>();
@@ -33,6 +34,10 @@ public static class DependencyContainer
         services.AddScoped<IGetReceiptsByDateInput, GetReceiptsByDateHandler>();
         services.AddScoped<IGetReceiptsByHouseOrResidentInput, GetReceiptsByHouseOrResidentHandler>();
         services.AddScoped<IGetAllReceiptsInput, GetAllReceiptsHandler>();
+
+        //  CHARGERS
+        services.AddScoped<IRegisterChargeInput, RegisterChargeHandler>();
+        services.AddScoped<IAssociateChargeInput, AssociateChargeHandler>();
 
         return services;
     }

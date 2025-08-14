@@ -3,6 +3,7 @@ using Learn.Api.Business.Objects.Interfaces.FinancialStatement.SearchAccount;
 using Learn.Api.Business.Objects.Interfaces.FinancialStatement.VisualizeAccount;
 using Learn.Api.BusinessObjects.Interfaces.FinancialStatement.GetVisualizeHomes.VisualizeAccount;
 using Learn.Api.BusinessObjects.Interfaces.Receipts;
+using Learn.Api.BusinessObjects.Interfaces.Chargers; // NUEVO
 using Learn.Api.Controllers.FinancialStatement.GetMonthlyFees;
 using Learn.Api.Controllers.FinancialStatement.GetSearchAccount;
 using Learn.Api.Controllers.FinancialStatement.GetVisualizeAccount;
@@ -14,7 +15,8 @@ using Learn.Api.Controllers.Receipts.GetReceiptsByDate;
 using Learn.Api.Controllers.Receipts.GetReceiptsByHouseOrResident;
 using Learn.Api.Controllers.Receipts.GetReceiptsForCurrentDay;
 using Learn.Api.Controllers.Receipts.GetReceiptsForCurrentMonth;
-
+using Learn.Api.Controllers.Chargers.RegisterCharge;   
+using Learn.Api.Controllers.Chargers.AssociateCharge; 
 
 namespace Learn.Api.Controllers
 {
@@ -34,6 +36,10 @@ namespace Learn.Api.Controllers
             services.AddScoped<IGetReceiptsForCurrentMonthController, GetReceiptsForCurrentMonthController>();
             services.AddScoped<IGetReceiptsByHouseOrResidentController, GetReceiptsByHouseOrResidentController>();
             services.AddScoped<IGetAllReceiptsController, GetAllReceiptsController>();
+
+            //  CHARGERS
+            services.AddScoped<IRegisterChargeController, RegisterChargeController>();
+            services.AddScoped<IAssociateChargeController, AssociateChargeController>();
 
             return services;
         }
